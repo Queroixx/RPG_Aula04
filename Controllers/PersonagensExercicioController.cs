@@ -3,10 +3,10 @@ using RpgApi.Models;
 using RpgApi.Models.Enuns;
 
 namespace RpgApi.Controllers
-{
+{   
     [ApiController]
     [Route("[controller]")]
-    public class PersonagensExemploController :  ControllerBase
+    public class PersonagensExercicioController :  ControllerBase
     {
         private static List<Personagem> personagens = new List<Personagem>()
         {
@@ -20,47 +20,16 @@ namespace RpgApi.Controllers
             new Personagem() { Id = 7, Nome = "Radagast", PontosVida=100, Forca=25, Defesa=11, Inteligencia=35, Classe=ClasseEnum.Mago }
         };
         
-        [HttpGet("Get")]
-        public IActionResult GetFirst()
+        [HttpGet("GetByNome/{nome}")]
+        public IActionResult GetByNome(string nome)
         {
-            Personagem p = personagens[0];
-            return Ok(p);
-        }
-        
-        [HttpGet("GetAll")]
-        public IActionResult Get()
-        {            
-            return Ok(personagens);
+            List<Personagem> listaNome = personagens.FindAll(p => p.Nome == nome);
+            if(listaNome == null)
+            {
+                return BadRequest("Nome não encontrado.");
+            }
+            return Ok(listaNome);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
-        {
-            return Ok(personagens.FirstOrDefault(pe => pe.Id == id));
-        }
-
-        [HttpPut]
-        public IActionResult UpdatePersonagem(Personagem p)
-        {
-            Personagem personagemAlterado = personagens.Find(pers => pers.Id == p.Id);
-            personagemAlterado.Nome = p.Nome;
-            personagemAlterado.PontosVida = p.PontosVida;
-            personagemAlterado.Forca = p.Forca;
-            personagemAlterado.Defesa = p.Defesa;
-            personagemAlterado.Inteligencia = p.Inteligencia;
-            personagemAlterado.Classe = p.Classe;
-
-            return Ok(personagens);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            personagens.RemoveAll(pers => pers.Id == id);
-
-            return Ok(personagens);
-        }
     }
-
-
 }

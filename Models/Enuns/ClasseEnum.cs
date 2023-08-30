@@ -4,6 +4,6 @@ namespace RpgApi.Models.Enuns
     {
         Cavaleiro = 1,
         Mago = 2,
-        Clerigo = 3,
+        Clerigo = 3
     }
 }
